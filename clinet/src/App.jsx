@@ -4,10 +4,14 @@ import './components/Header';
 import Header from './components/Header';
 import SearchBar from './components/SearchBar';
 import { Container, Card, Button, Row, Col, Alert } from 'react-bootstrap'; 
+// import { BsFillStarFill } from 'react-icons/fa';
+import { FaReact,FaStar } from "react-icons/fa";
+import Loader from './components/Loader';
 
 function App() {
   const [movies, setMovies] = useState([]);
-  const [error, setError] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     fetchMovies();
@@ -15,11 +19,13 @@ function App() {
 
   const fetchMovies = async () => {
     try {
-      const response= await axios ('http://localhost:5000/movies');
-      debugger;
-      setMovies(response)
+      setLoading(true);
+      const response= await axios ('http://localhost:4000/movies');
+      setLoading(false);
+      setMovies(response.data)
     }
-    catch(e) {
+    catch (e) {
+      setLoading(false);
       setError(`Server Error ${e.message} ${e.stack}`);
     }
   }
@@ -27,18 +33,20 @@ function App() {
    <div>
      <Header/>
      <Container className='mt-5'>
-       <SearchBar />
+       <SearchBar onClickRefresh={fetchMovies} />
        {error && <Alert variant="danger">{error}</Alert>}
+       {loading ? <Loader /> :
        <Row className=''>
-         <Col className='d-flex'>
-       {movies.map(({title,id}) =>{
+         <Col className='d-flex flex-wrap'>
+       {movies.map(({title,id,Poster,rating}) =>{
          return (
-          <Card className='m-3' style={{ width: '18rem' }}>
+          <Card className='m-3' style={{ width: '15rem' }}>
           <Card.Body key={id}>
-            <Card.Title>{title}</Card.Title>
-            <Card.Text>
-              Lorem
-            </Card.Text>
+          <img src={Poster} key={id} style={{ width: '13rem',height: '200px' }} />
+          <div className='d-flex'>
+            <Card.Title style={{width: '100%'}}>{title}</Card.Title>
+            <span className='d-flex '>{rating}<FaStar className='mt-1' color='#ff8d00' /></span>
+          </div >
             <Button variant="primary">Book Now</Button>
           </Card.Body>
         </Card>
@@ -46,6 +54,7 @@ function App() {
        })}
        </Col>
        </Row>
+}
      </Container>
    </div>
   );

@@ -1,8 +1,10 @@
 $primary: #803588;
 $danger: red;
+$yellow: yellow;
 
 $theme-color: (
     "primary-color": $primary
 );
+
 
 @import 'bootstrap/dist/css/bootstrap.css';
