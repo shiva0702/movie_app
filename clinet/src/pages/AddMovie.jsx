@@ -19,7 +19,7 @@ const AddMovie = () => {
     const onClickSubmit = async () => {
         try {
             await axios({
-                url: 'http://localhost:4000/api/movies',
+                url: 'http://localhost:4000/movies',
                 method: 'POST',
                 data: formValues
             });
@@ -31,6 +31,7 @@ const AddMovie = () => {
     }
 
     return (
+        <div className='mt-5'>
         <Card>
             <Card.Header>
                 <h4>Add Movie</h4>
@@ -46,13 +47,14 @@ const AddMovie = () => {
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="poster">
                     <Form.Label>Movie Poster</Form.Label>
-                    <Form.Control type="text" name="poster" onChange={onChangeFormField} />
+                    <Form.Control type="text" name="Poster" onChange={onChangeFormField} />
                 </Form.Group>
                 <Button variant="primary" type="button" onClick={onClickSubmit}>
                     Submit
                 </Button>
             </Card.Body>
         </Card>
+        </div>
     )
 }
 
