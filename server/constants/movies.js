@@ -8,8 +8,8 @@ const movies = [
     {
         id: 2,
         title: 'Spiderman',
-        Poster: 
-        "https://m.media-amazon.com/images/M/MV5BMTY5ODI4NzMtM2EzYS00ZGFlLThjMjgtODMyN2QwYjBkYTYwXkEyXkFqcGdeQXVyMTEyNzgwMDUw._V1_FMjpg_UX1000_.jpg",
+        Poster:
+            "https://m.media-amazon.com/images/M/MV5BMTY5ODI4NzMtM2EzYS00ZGFlLThjMjgtODMyN2QwYjBkYTYwXkEyXkFqcGdeQXVyMTEyNzgwMDUw._V1_FMjpg_UX1000_.jpg",
         rating: '9',
     },
     {
@@ -50,7 +50,6 @@ const movies = [
     },
 ];
 
-module.exports =
-    {
+module.exports = {
     movies
-    }
+}

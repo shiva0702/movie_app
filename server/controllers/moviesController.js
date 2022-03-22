@@ -1,14 +1,29 @@
 
-const { movies } = require ("../constants/movies")
-const getallMovies = (req, res) => {
+const { movies } = require("../constants/movies.js")
+
+const getAllMovies = (req, res) => {
     res.json(movies)
 }
 
-const getMovie = () => {
-    res.json(movies);
+const getMovie = (req, res) => {
+    const { movieId } = req.params;
+    try {
+        const movie = movies.filter(movie => movie.id === Number(movieId));
+        if (movie.length === 0) throw new Error("Movie Not Found");
+        res.json({
+            message: 'Movie Found',
+            movie: movie && movie[0]
+        });
+
+    }
+    catch (e) {
+        res.status(404).json({
+            message: e.message
+        });
+    }
 }
 
-module.export = {
-     getallMovies,
-     getMovie
+module.exports = {
+    getAllMovies,
+    getMovie
 }
