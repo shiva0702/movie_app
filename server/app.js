@@ -4,15 +4,14 @@ const express = require('express');
 const logger = require('morgan');
 const createError = require('http-errors');
 const cors = require('cors');
-const { Sequelize } = require("sequelize");
+// const { Sequelize } = require("sequelize");
 
+const models = require('./models')
 const apiRoutes = require("./routes")
 const { PORT, PG_URI } = process.env;
 
 const startServer = async () => {
 
-  const sequelize = new Sequelize(PG_URI);
-  await sequelize.authenticate();
   const app = express();
 
   app.use(cors());

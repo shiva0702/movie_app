@@ -1,18 +1,39 @@
+const { Op } = require("sequelize");
+const { Movie } = require('../models');
 
-const { movies } = require("../constants/movies.js")
+const getAllMovies = async (req, res) => {
+    const { searchText } = req.query;
 
-const getAllMovies = (req, res) => {
-    res.json(movies)
+    try {
+        const conditions = searchText ? {
+            where: {
+                title: {
+                    [Op.iRegexp]: searchText
+                }
+            }
+        } : {};
+        const movies = await Movie.findAll(conditions);
+        return res.json(movies)
+    }
+    catch (e) {
+        res.status(500).json({
+            message: e.message
+        });
+    }
 }
 
-const getMovie = (req, res) => {
+const getMovie = async (req, res) => {
     const { movieId } = req.params;
     try {
-        const movie = movies.filter(movie => movie.id === Number(movieId));
-        if (movie.length === 0) throw new Error("Movie Not Found");
+        const movie = await Movie.findOne({
+            where: {
+                id: Number(movieId)
+            }
+        })
+        if (!movie) throw new Error("Movie Not Found");
         res.json({
             message: 'Movie Found',
-            movie: movie && movie[0]
+            movie
         });
 
     }
@@ -22,8 +43,28 @@ const getMovie = (req, res) => {
         });
     }
 }
+const addMovie = async (req, res) => {
+    const { title, poster, rating } = req.body;
+    try {
+        const createMovie = await Movie.create({
+            title,
+            rating,
+            poster
+        });
+        return res.json({
+            message: 'Movie Created',
+            movie: createMovie
+        })
+    }
+    catch (e) {
+        res.status(500).json({
+            message: e.message
+        });
+    }
+}
 
 module.exports = {
     getAllMovies,
-    getMovie
+    getMovie,
+    addMovie
 }
